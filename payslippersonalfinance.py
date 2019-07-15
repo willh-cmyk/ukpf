@@ -80,10 +80,12 @@ class PayslipPersonalFinance:
     
     def autoenrolement_pension(self):
         if self.salary < 10000:
-            ae_pension = 0
+            self.ae_pension = 0
         else:
-            ae_pension = self.salary * (self.ae_pension_employer_contrib + self.ae_pension_personal_contrib)
-        return ae_pension
+            self.employer_contribution = self.salary * self.ae_pension_employer_contrib
+            self.personal_contribution = self.salary * self.ae_pension_personal_contrib
+            self.ae_pension = self.employer_contribution + self.personal_contribution
+        return self.ae_pension
     
     @staticmethod
     def compound_interest_calculator(principal, rate, time):
