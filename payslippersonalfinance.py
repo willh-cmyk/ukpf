@@ -11,7 +11,9 @@ class PayslipPersonalFinance:
                  tax_free_allowance=12500, 
                  basic_tax_rate=0.2, 
                  higher_tax_rate=0.4,
+                 additional_tax_rate=0.45,
                  upper_tax_threshold=50000,
+                 additional_tax_threshold=150000,
                  national_insurance_allowance=8632, 
                  basic_rate_ni=0.12,
                  higher_rate_ni=0.02,
@@ -24,7 +26,9 @@ class PayslipPersonalFinance:
         self.tax_free_allowance = tax_free_allowance
         self.basic_tax_rate = basic_tax_rate
         self.higher_tax_rate = higher_tax_rate
+        self.additional_tax_rate = additional_tax_rate
         self.upper_tax_threshold = upper_tax_threshold
+        self.additional_tax_threshold = additional_tax_threshold
         self.national_insurance_allowance = national_insurance_allowance
         self.basic_rate_ni = basic_rate_ni
         self.higher_rate_ni = higher_rate_ni
@@ -42,12 +46,14 @@ class PayslipPersonalFinance:
                 (self.salary - self.tax_free_allowance)
                 * self.basic_tax_rate
             )
-        if self.salary > self.upper_tax_threshold:
+        if self.salary > self.upper_tax_threshold and self.salary <= self.additional_tax_threshold:
             self.tax = (
                 (self.upper_tax_threshold - self.tax_free_allowance)
                 * self.basic_tax_rate
                 + (self.salary - self.upper_tax_threshold)
                 * self.higher_tax_rate
+                + (self.salary - self.additional_tax_threshold)
+                * self.additional_tax_rate
             )
         return self.tax
     
