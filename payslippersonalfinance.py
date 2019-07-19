@@ -12,12 +12,12 @@ class PayslipPersonalFinance:
                  basic_tax_rate=0.2, 
                  higher_tax_rate=0.4,
                  additional_tax_rate=0.45,
-                 upper_tax_threshold=50000,
-                 additional_tax_threshold=150000,
-                 national_insurance_allowance=8632, 
+                 upper_tax_threshold=5e4,
+                 additional_tax_threshold=1.5e5,
+                 national_insurance_allowance=8628, 
                  basic_rate_ni=0.12,
                  higher_rate_ni=0.02,
-                 upper_ni_threshold=50024,
+                 upper_ni_threshold=50004,
                  sl_repayment_threshold=25688, 
                  sl_repayment_rate=0.09,
                  ae_pension_employer_contrib=0.03,
@@ -37,7 +37,12 @@ class PayslipPersonalFinance:
         self.sl_repayment_rate = sl_repayment_rate
         self.ae_pension_employer_contrib = ae_pension_employer_contrib
         self.ae_pension_personal_contrib = ae_pension_personal_contrib
-
+        
+        if not isinstance(self.salary, (int, float)):
+            raise TypeError("PayslipPersonalFinance only accepts ints and floats to the salary attribute.")
+        elif self.salary < 0:
+            raise ValueError("Salary must be greater than zero.")
+        
     def tax_calculator(self):
         if self.salary <= self.tax_free_allowance:
             self.tax = 0
