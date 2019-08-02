@@ -6,23 +6,22 @@ This module also contains simple helper functions for calculating simple and com
 
 class PayslipPersonalFinance:
     
-    def __init__(
-        self, 
-        salary, 
-        tax_free_allowance=12500, 
-        basic_tax_rate=0.2, 
-        higher_tax_rate=0.4,
-        additional_tax_rate=0.45,
-        upper_tax_threshold=5e4,
-        additional_tax_threshold=1.5e5,
-        national_insurance_allowance=8628, 
-        basic_rate_ni=0.12,
-        higher_rate_ni=0.02,
-        upper_ni_threshold=50004,
-        sl_repayment_threshold=25688, 
-        sl_repayment_rate=0.09,
-        ae_pension_employer_contrib=0.03,
-        ae_pension_personal_contrib=0.05):
+    def __init__(self, 
+                 salary, 
+                 tax_free_allowance=12500, 
+                 basic_tax_rate=0.2, 
+                 higher_tax_rate=0.4,
+                 additional_tax_rate=0.45,
+                 upper_tax_threshold=5e4,
+                 additional_tax_threshold=1.5e5,
+                 national_insurance_allowance=8628, 
+                 basic_rate_ni=0.12,
+                 higher_rate_ni=0.02,
+                 upper_ni_threshold=50004,
+                 sl_repayment_threshold=25688, 
+                 sl_repayment_rate=0.09,
+                 ae_pension_employer_contrib=0.03,
+                 ae_pension_personal_contrib=0.05):
         self.salary = salary
         self.tax_free_allowance = tax_free_allowance
         self.basic_tax_rate = basic_tax_rate
@@ -45,40 +44,44 @@ class PayslipPersonalFinance:
             raise ValueError("Salary must be greater than zero.")
         
     def tax_calculator(self):
-        self.tax = 0
-        if self.salary > self.tax_free_allowance:
-            self.tax += (
+        if self.salary <= self.tax_free_allowance:
+            self.tax = 0
+        if self.salary > self.tax_free_allowance and self.salary <= self.upper_tax_threshold:
+            self.tax = (
                 (self.salary - self.tax_free_allowance)
                 * self.basic_tax_rate
             )
-        if self.salary > self.upper_tax_threshold:
-            self.tax += (
-                (self.salary - self.upper_tax_threshold)
+        if self.salary > self.upper_tax_threshold and self.salary <= self.additional_tax_threshold:
+            self.tax = (
+                (self.upper_tax_threshold - self.tax_free_allowance)
+                * self.basic_tax_rate
+                + (self.salary - self.upper_tax_threshold)
                 * self.higher_tax_rate
-            )
-        if self.salary > self.additional_tax_threshold:
-            self.tax += (
-                (self.salary - self.additional_tax_threshold)
+                + (self.salary - self.additional_tax_threshold)
                 * self.additional_tax_rate
             )
         return self.tax
     
     def national_insurance_calculator(self):
-        self.national_insurance = 0
-        if self.salary > self.national_insurance_allowance:
-            self.national_insurance += (
+        if self.salary <= self.national_insurance_allowance:
+            self.national_insurance = 0
+        if self.salary > self.national_insurance_allowance and self.salary < self.upper_ni_threshold:
+            self.national_insurance = (
                 (self.salary - self.national_insurance_allowance)
                 * self.basic_rate_ni
             )
         if self.salary >= self.upper_ni_threshold:
-            self.national_insurance += (
-                (self.salary - self.upper_ni_threshold)
+            self.national_insurance = (
+                (self.upper_ni_threshold - self.national_insurance_allowance)
+                * self.basic_rate_ni 
+                + (self.salary - self.upper_ni_threshold)
                 * self.higher_rate_ni
             )
         return self.national_insurance
         
     def student_loan_repayment_calculator(self):
-        self.student_loan_repayment = 0
+        if self.salary <= self.sl_repayment_threshold:
+            self.student_loan_repayment = 0
         if self.salary > self.sl_repayment_threshold:
             self.student_loan_repayment = (
                 (self.salary - self.sl_repayment_threshold)
@@ -87,12 +90,12 @@ class PayslipPersonalFinance:
         return self.student_loan_repayment
     
     def autoenrolement_pension(self):
-        if self.salary >= 10000:
+        if self.salary < 10000:
+            self.ae_pension = 0
+        else:
             self.employer_contribution = self.salary * self.ae_pension_employer_contrib
             self.personal_contribution = self.salary * self.ae_pension_personal_contrib
             self.ae_pension = self.employer_contribution + self.personal_contribution
-        else:
-            self.ae_pension = 0
         return self.ae_pension
     
     @staticmethod
@@ -103,4 +106,3 @@ class PayslipPersonalFinance:
     @staticmethod
     def simple_interest_calculator(principal, rate, time):
         interest = principal * rate * time
-        return interest
