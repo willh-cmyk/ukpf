@@ -4,11 +4,10 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-     name='ukpersonalfinance',  
+     name='ukpf',
      version='0.1',
-     scripts=['payslippersonalfinance.py'] ,
+     scripts=['payslip.py'],
      author="William Holtam",
-     author_email="william.holtam@gmail.com",
      description="A personal finance package for the UK tax system",
      long_description=long_description,
      long_description_content_type="text/markdown",

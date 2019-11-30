@@ -1,10 +1,10 @@
 """Unittesting for payslippersonalfinance module"""
 
 import unittest
-from payslippersonalfinance import PayslipPersonalFinance
+from payslip import Payslip
 
-class TestPayslipPersonalFinance(unittest.TestCase):
-    
+class TestPayslip(unittest.TestCase):
+
     def setUp(self):
         self.salary_names = ['low', 'medium', 'high']
         self.salary = {
@@ -40,12 +40,12 @@ class TestPayslipPersonalFinance(unittest.TestCase):
         self.exp_comp_interest = {
             'low': 0,
             'medium': 2320.0,
-            'high': 3600.0} 
+            'high': 3600.0}
         self.exp_simple_interest = {
             'low': 0,
             'medium': 2320.0,
             'high': 3600.0}
-    
+
     def test_init(self):
         for (key, salary) in self.salary.items():
             if key in self.salary_names:
@@ -68,7 +68,7 @@ class TestPayslipPersonalFinance(unittest.TestCase):
                 self.assertRaises(TypeError, PayslipPersonalFinance, self.salary['string'])
             elif salary == -300:
                 self.assertRaises(ValueError, PayslipPersonalFinance, self.salary['negative'])
-    
+
     def test_tax_calculator(self):
         for salary_name in self.salary_names:
             pspf = PayslipPersonalFinance(self.salary[salary_name])
@@ -98,7 +98,7 @@ class TestPayslipPersonalFinance(unittest.TestCase):
         for salary_name in self.salary_names:
             pspf = PayslipPersonalFinance(self.salary[salary_name])
             self.assertEqual(self.exp_interest['simple'], pspf.simple_interest_calculator(self.interest['principal'], self.interest['rate'], self.interest['time']))
-            
+
 
 if __name__ == '__main__':
     unittest.main()
