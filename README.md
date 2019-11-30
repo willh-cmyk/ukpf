@@ -1,4 +1,4 @@
-# ukpersonalfinance
+# ukpf
 
 This project eventually aims to be a complete personal finance package for the UK tax system.
 
