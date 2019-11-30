@@ -13,6 +13,7 @@ setuptools.setup(
      long_description=long_description,
      long_description_content_type="text/markdown",
      url="https://github.com/williamholtam/ukpersonalfinance",
+     download_url="https://github.com/WilliamHoltam/ukpf/archive/v_01.tar.gz",
      packages=setuptools.find_packages(),
      keywords=["PERSONAL", "FINANCE", "UK", "PAYSLIP"],
      classifiers=[
