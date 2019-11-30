@@ -1,0 +1,1 @@
+from ukpf.payslip import Payslip
