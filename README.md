@@ -15,4 +15,4 @@ There are also static methods for calculating:
 I am not responsible for any financial decisions made as a result of this code. This project is in an alpha state, expect bugs and use with caution.
 
 Install using:
-` pip install ukpersonalfinance`
+` pip install ukpf`
